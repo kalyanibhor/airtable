@@ -96,10 +96,10 @@ export const CustomerPage = connect(
         ellipsesOpen: !this.state.ellipsesOpen,
       });
     };
-    handleClick = (page,offset) => {
-      console.log(page,offset);
-
-      this.props.changeFilterData(page);
+    handleClick = (offset) => {
+      console.log(offset);
+      this.props.loadCustomerData({offset});
+      // this.props.changeFilterData(page);
     };
    
     render() {
@@ -273,14 +273,23 @@ export const CustomerPage = connect(
             </div>
             {offsetId && offsetId ? (
               <Pagination
-                handleClick={(page) => {
-                  this.handleClick(page);
+                handleClick={(offset) => {
+                  this.handleClick(offset);
                 }}
                 
                 offsetId={offsetId}
                 {...page}
               />
-            ) : null}
+            ) : 
+            <Pagination
+                handleClick={(offset) => {
+                  this.handleClick(offset);
+                }}
+                
+                offsetId={offsetId}
+                {...page}
+              />
+            }
           </div>
         </div>
       ) : (

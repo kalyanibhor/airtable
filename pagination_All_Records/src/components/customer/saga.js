@@ -6,16 +6,30 @@ export function* loadCustomerSaga() {
   console.log("load saga called");
   while (true) {
     try {
+      let apiData='' ;
       const { payload: data } = yield take(
         customersActions.loadCustomerData().type
       );
-     let apiData = yield call(
+      console.log(data);
+      if(data){
+        apiData = yield call(
+          api,
+          `https://api.airtable.com/v0/appy19HtBkyLLeEF1/customers?api_key=keypO3dUKSWTYI2X2&offset=${data.offset}`
+        );
+     
+      }
+     else{
+     
+      apiData = yield call(
         api,
         `https://api.airtable.com/v0/appy19HtBkyLLeEF1/customers?api_key=keypO3dUKSWTYI2X2`
       );
-      console.log(apiData);
-      // yield putResolve(customersActions.setApiError({status:false,message:""}));
+      
+     }
+     console.log(apiData);
+     // yield putResolve(customersActions.setApiError({status:false,message:""}));
       yield putResolve(customersActions.load({customers:apiData.records,offsetId:apiData.offset}));
+     
     } catch (err) {
       console.log(err);
       yield putResolve(

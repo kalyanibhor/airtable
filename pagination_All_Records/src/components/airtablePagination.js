@@ -33,8 +33,8 @@ class Pagination extends Component {
         ? Math.max(0, Math.min(pageNeighbours, 2))
         : 0;
 
-    this.totalPages = Math.ceil(this.totalRecords / this.pageLimit)+1;
-
+    // this.totalPages = Math.ceil(this.totalRecords / this.pageLimit)+1;
+this.totalPages=this.props.offsetId.length;
     this.state = { currentPage: 1 };
   }
   componentDidMount() {
@@ -56,10 +56,10 @@ class Pagination extends Component {
     this.setState({ currentPage }, () => onPageChanged(paginationData));
   };
 
-  handleOnClick = (page,offset) => (evt) => {
+  handleOnClick = (offset) => (evt) => {
     evt.preventDefault();
-    this.gotoPage(page);
-    this.props.handleClick(page,offset);
+    // this.gotoPage(page);
+    this.props.handleClick(offset);
   };
 
   handleMoveLeft = (evt) => {
@@ -206,7 +206,7 @@ class Pagination extends Component {
                       <a
                         className="page-link"
                         href="#"
-                        onClick={this.handleOnClick(page,offsetNo)}
+                        onClick={this.handleOnClick(offsetId[page-1])}
                       >
                         {page}
                       </a>

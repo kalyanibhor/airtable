@@ -12,7 +12,7 @@ export const [customersActions, customersSelector, customersState] = state(
         name: { ascending: true },
         updatedAt:{ascending:true}
       },
-      offsetId:[],
+      offsetId:[''],
       totalCount:0,
       opr:"Add",
       editIndex:-1,
