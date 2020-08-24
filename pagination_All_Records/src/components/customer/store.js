@@ -12,7 +12,7 @@ export const [customersActions, customersSelector, customersState] = state(
         name: { ascending: true },
         updatedAt:{ascending:true}
       },
-      offsetId:0,
+      offsetId:[],
       totalCount:0,
       opr:"Add",
       editIndex:-1,
@@ -28,7 +28,7 @@ export const [customersActions, customersSelector, customersState] = state(
           ..._,
         };
         newStoreObj.loading = true;
-        newStoreObj.offsetId = data.offsetId;
+        newStoreObj.offsetId.push(data.offsetId);
         newStoreObj.customers = data.customers;
        
         newStoreObj.opr ="Add";

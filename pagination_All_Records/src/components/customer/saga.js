@@ -9,55 +9,13 @@ export function* loadCustomerSaga() {
       const { payload: data } = yield take(
         customersActions.loadCustomerData().type
       );
-      
-      let temp=[];
-      let offsetId = [];
-      let flag = true;
-      let apiData;
-      let i=0;
-      let offset;
-      while (true) {
-        if (flag === true) {
-          apiData = yield call(
-            api,
-            `https://api.airtable.com/v0/appy19HtBkyLLeEF1/customers?api_key=keypO3dUKSWTYI2X2`
-          );
-          offset=apiData.offset;
-          offsetId.push(apiData.offset);
-          console.log(offsetId);
-          temp.push(...apiData.records);
-          console.log(temp);
-          flag=false;
-        }
-        else{
-          if(offsetId.length>0 && offset){
-            apiData = yield call(
-              api,
-              `https://api.airtable.com/v0/appy19HtBkyLLeEF1/customers?api_key=keypO3dUKSWTYI2X2&offset=${offsetId[i]}`
-            );
-            offset=apiData.offset;
-            if(apiData.offset){
-            offsetId.push(apiData.offset);
-
-            console.log(offsetId);
-            i=i+1;
-            }
-            temp.push(...apiData.records);
-            console.log(temp);
-            
-          }
-         else{
-           break;
-         }
-        }
-
-
-       
-      }
-     
-      console.log(temp);
+     let apiData = yield call(
+        api,
+        `https://api.airtable.com/v0/appy19HtBkyLLeEF1/customers?api_key=keypO3dUKSWTYI2X2`
+      );
+      console.log(apiData);
       // yield putResolve(customersActions.setApiError({status:false,message:""}));
-      yield putResolve(customersActions.load({customers:temp,totalCount:temp.length,offsetId:apiData.offsetId}));
+      yield putResolve(customersActions.load({customers:apiData.records,offsetId:apiData.offset}));
     } catch (err) {
       console.log(err);
       yield putResolve(

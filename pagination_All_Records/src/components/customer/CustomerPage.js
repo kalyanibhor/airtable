@@ -96,14 +96,15 @@ export const CustomerPage = connect(
         ellipsesOpen: !this.state.ellipsesOpen,
       });
     };
-    handleClick = (page) => {
-      console.log(page);
+    handleClick = (page,offset) => {
+      console.log(page,offset);
 
-     this.props.changeFilterData(page);
+      this.props.changeFilterData(page);
     };
+   
     render() {
       const {
-       customers, 
+        customers,
         searchCustomer,
         filteredCustomer,
         loading,
@@ -119,55 +120,58 @@ export const CustomerPage = connect(
         pageLimit: 100,
         pageNeighbours: 1,
       };
-     
+
       const customerData = () => {
         if (loading === true) {
-          return filteredCustomer&&filteredCustomer.map((el, index) => {
-            return (
-              <tr key={index}>
-                <td></td>
-                <td className="orders-order">{el.fields.ccode}</td>
-                <td className="orders-product">{el.fields.name}</td>
+          return (
+            filteredCustomer &&
+            filteredCustomer.map((el, index) => {
+              return (
+                <tr key={index}>
+                  <td></td>
+                  <td className="orders-order">{el.fields.ccode}</td>
+                  <td className="orders-product">{el.fields.name}</td>
 
-                <td className="text-right">
-                  <div className="dropdown">
-                    <span
-                      href="#"
-                      className="dropdown-ellipses dropdown-toggle"
-                      role="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      onClick={() => this.showEllipse(index)}
-                    >
-                      <i className="fe fe-more-vertical"></i>
-                      <div
-                        className="dropdown-menu dropdown-menu-right dropdown-menu-card dropdown-primary"
-                        ref={(input) => {
-                          this[`ellipse${index}`] = input;
-                        }}
+                  <td className="text-right">
+                    <div className="dropdown">
+                      <span
+                        href="#"
+                        className="dropdown-ellipses dropdown-toggle"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        onClick={() => this.showEllipse(index)}
                       >
-                        <span
-                          className="dropdown-item"
-                          onClick={() => this.editRecord(index)}
+                        <i className="fe fe-more-vertical"></i>
+                        <div
+                          className="dropdown-menu dropdown-menu-right dropdown-menu-card dropdown-primary"
+                          ref={(input) => {
+                            this[`ellipse${index}`] = input;
+                          }}
                         >
-                          <i className="fa fa-pencil"></i>&nbsp;&nbsp;Edit
-                        </span>
-                        <span
-                          className="dropdown-item"
-                          onClick={() => this.deleteRecord(el.ccode)}
-                        >
-                          <i className="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                        </span>
-                      </div>
-                    </span>
+                          <span
+                            className="dropdown-item"
+                            onClick={() => this.editRecord(index)}
+                          >
+                            <i className="fa fa-pencil"></i>&nbsp;&nbsp;Edit
+                          </span>
+                          <span
+                            className="dropdown-item"
+                            onClick={() => this.deleteRecord(el.ccode)}
+                          >
+                            <i className="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                          </span>
+                        </div>
+                      </span>
 
-                    <br />
-                  </div>
-                </td>
-              </tr>
-            );
-          });
+                      <br />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })
+          );
         } else {
           return <Loader />;
         }
@@ -267,13 +271,16 @@ export const CustomerPage = connect(
                 </div>
               </div>
             </div>
-            <Pagination
-              handleClick={(page) => {
-                this.handleClick(page);
-              }}
-              offsetId={offsetId}
-              {...page}
-            />
+            {offsetId && offsetId ? (
+              <Pagination
+                handleClick={(page) => {
+                  this.handleClick(page);
+                }}
+                
+                offsetId={offsetId}
+                {...page}
+              />
+            ) : null}
           </div>
         </div>
       ) : (
